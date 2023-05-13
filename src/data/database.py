@@ -34,9 +34,22 @@ class Database(object):
     def insert_user(self, user_name):
         """Insere dados na tabela especificada do banco de dados"""
         # Cria uma string com a sintaxe SQL para inserir os dados
-        sql = f'''INSERT INTO Users (name) values ({user_name})'''
+        sql = f'''INSERT INTO Users (name) values ("{user_name}")'''
         self.execute(sql)
 
     def get_all_users(self):
         sql = '''SELECT * FROM USERS'''
         self.execute(sql)
+
+    def get_by_id(self, id: int):
+        sql = f"SELECT * FROM Users WHERE id = {id}"
+        self.cursor.execute(sql)
+        result = self.cursor.fetchone()
+        return result
+
+    def count_rows(self):
+        query = "SELECT COUNT(*) FROM Users"
+        self.cursor.execute(query)
+        result = self.cursor.fetchone()
+        row_count = result[0]
+        return row_count
